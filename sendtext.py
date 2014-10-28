@@ -66,14 +66,17 @@ class RBoxSendTextCommand(sublime_plugin.TextCommand):
             App = RBoxSettings("App", "R")
 
             if App == "RStudio":
+                app_focus_string = 'tell app "Sublime Text" to activate'
+                if RBoxSettings("app_focus", False):
+                    app_focus_string = ''
                 args = ['osascript']
                 apple_script = ('tell application "RStudio" to activate\n'
                                 'delay 0.25\n'
                                 'tell application "System Events"\n'
                                     'keystroke "v" using {command down}\n'
                                     'keystroke return\n'
-                                'end tell\n'
-                                'tell application "Sublime Text" to activate\n')
+                                'end tell\n' + app_focus_string
+                                )
                 args.extend(['-e', apple_script])
                 oldcb = sublime.get_clipboard()
                 sublime.set_clipboard(cmd)
@@ -83,28 +86,36 @@ class RBoxSendTextCommand(sublime_plugin.TextCommand):
 
             cmd = escape_dq(cmd)
             if re.match('R[0-9]*$', App):
+                app_focus_string = ''
+                if RBoxSettings("app_focus", False):
+                    app_focus_string = 'tell app "' + App + '" to activate\n'
                 args = ['osascript']
-                args.extend(['-e', 'tell app "' + App + '" to cmd "' + cmd + '"'])
+                args.extend(['-e', app_focus_string + 'tell app "' + App + '" to cmd "' + cmd + '"'])
                 subprocess.Popen(args)
             elif App == 'Terminal':
+                app_focus_string = ''
+                if RBoxSettings("app_focus", False):
+                    app_focus_string = 'tell app "' +  App + '" to activate\n'
                 args = ['osascript']
-                args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
+                args.extend(['-e', app_focus_string + 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
                 subprocess.Popen(args)
             elif re.match('iTerm', App):
-                    # when cmd ends in a space, iterm does not execute. Thus append a line break.
-                    if (cmd[-1:] == ' '):
-                        cmd += '\n'
-                    args = ['osascript']
-                    apple_script = ('tell application "' + App + '"\n'
-                                        'tell the first terminal\n'
-                                            'tell current session\n'
-                                                'write text "' + cmd + '"\n'
-                                            'end tell\n'
+                app_focus_string = ''
+                if RBoxSettings("app_focus", False):
+                    app_focus_string = 'tell app "' + App + '" to activate\n'
+                # when cmd ends in a space, iterm does not execute. Thus append a line break.
+                if (cmd[-1:] == ' '):
+                    cmd += '\n'
+                args = ['osascript']
+                apple_script = (app_focus_string + 'tell application "' + App + '"\n'
+                                    'tell the first terminal\n'
+                                        'tell current session\n'
+                                            'write text "' + cmd + '"\n'
                                         'end tell\n'
-                                    'end tell\n')
-                    args.extend(['-e', apple_script])
-                    subprocess.Popen(args)
-
+                                    'end tell\n'
+                                'end tell\n')
+                args.extend(['-e', apple_script])
+                subprocess.Popen(args)
         elif plat == 'windows':
             App = RBoxSettings("App", "R64")
             progpath = RBoxSettings(App, str(1) if App == "R64" else str(0))

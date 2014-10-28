@@ -22,6 +22,9 @@
     // auto advance lines after sending command
     "auto_advance": true,
 
+    // keep focus on App after sending command
+    "app_focus": false,
+
     // auto completions for the following packages
     // "base", "stats", "methods", "utils", "graphics",
     // "grDevices", "data.table", "ggplot2"
