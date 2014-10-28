@@ -86,6 +86,9 @@ class RBoxSendTextCommand(sublime_plugin.TextCommand):
 
             cmd = escape_dq(cmd)
             if re.match('R[0-9]*$', App):
+                R_box_app = sublime.active_window().active_view().settings().get('R_box_app')
+                if R_box_app is not None:
+                    App = R_box_app
                 app_focus_string = ''
                 if RBoxSettings("app_focus", False):
                     app_focus_string = 'tell app "' + App + '" to activate\n'
