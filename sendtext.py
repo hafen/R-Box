@@ -49,6 +49,13 @@ def plugin_loaded():
 class RBoxSendTextCommand(sublime_plugin.TextCommand):
     def run(self, edit, cmd):
 
+        R_box_setwd = self.view.settings().get('R_box_setwd')
+        if R_box_setwd is not None:
+            if R_box_setwd:
+                folder = self.view.window().folders()
+                if folder is not None:
+                    cmd = 'setwd("' + folder[0] + '")\n' + cmd
+
         # clean command before sending to R
         cmd = cmd.expandtabs(4)
         cmd = cmd.rstrip('\n')
