@@ -2,5 +2,40 @@
     {
         "caption": "R-Box Application",
         "command": "r_box_app_switch"
+    },
+    {
+        "caption": "R-Box Run Roxygen",
+        "command": "r_box_send_text",
+        "args": {
+            "cmd": "library(roxygen2)\nroxygenize()"
+        }
+    },
+    {
+        "caption": "R-Box devtools: build()",
+        "command": "r_box_send_text",
+        "args": {
+            "cmd": "library(devtools)\nbuild()"
+        }
+    },
+    {
+        "caption": "R-Box devtools: check()",
+        "command": "r_box_send_text",
+        "args": {
+            "cmd": "library(devtools)\ncheck()"
+        }
+    },
+    {
+        "caption": "R-Box devtools: test()",
+        "command": "r_box_send_text",
+        "args": {
+            "cmd": "library(devtools)\ntest()"
+        }
+    },
+    {
+        "caption": "R-Box devtools: load_all()",
+        "command": "r_box_send_text",
+        "args": {
+            "cmd": "library(devtools)\nload_all()"
+        }
     }
 ]
