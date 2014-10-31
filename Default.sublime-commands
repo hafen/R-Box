@@ -37,5 +37,12 @@
         "args": {
             "cmd": "library(devtools)\nload_all()"
         }
+    },
+    {
+        "caption": "R-Box devtools: install()",
+        "command": "r_box_send_text",
+        "args": {
+            "cmd": "library(devtools)\ninstall()"
+        }
     }
 ]
