@@ -3,20 +3,21 @@ R package for Sublime Text
 
 Features:
 
-  1. Multi platform support (windows/mac/linux)
-  2. Send commands to various applicaionts (R gui, Terminal, iTerm 2, screen, tmux...)
-  3. Function hints in status bar
-  4. Autocompletions for base R commands
-  5. Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
-  6. [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
+  - Send commands to various programs. 
+    - Mac: R gui, Terminal, iTerm 2; 
+    - Unix: screen, tmux; 
+    - Windows: R gui, Cygwin, [Cmder](http://bliker.github.io/cmder/) (see below to configure Cmder); 
+    - SublimeREPL
+  - Autocompletions for various packages.
+  - Function hints in status bar for various packages.
+  - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
+  - [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
 
-This package contains an extended version of the R syntax
-definition, so you can safely disable the default `R` package.
-If you are only interested in the syntax files, check [R-Extended](https://github.com/randy3k/R-Extended).
+If you are only interested in the syntax files, checkout [R-Extended](https://github.com/randy3k/R-Extended).
 
-If you like it, you could send me some tips via [![](http://img.shields.io/gittip/randy3k.svg)](https://www.gittip.com/randy3k).
+If you like it, you could send me some tips via [![](http://img.shields.io/gratipay/randy3k.svg)](https://gratipay.com/randy3k/).
 
-![](https://raw.githubusercontent.com/randy3k/R-Box/master/screenshots/terminal.png)
+![](https://raw.githubusercontent.com/randy3k/R-Box/screenshots/terminal.png)
 
 ### Getting start
 
@@ -27,17 +28,11 @@ If you like it, you could send me some tips via [![](http://img.shields.io/gitti
 
 ### Usage
 
-`C` is `ctrl` for Windows/Linux, `cmd` for Mac.
+In the following, <kbd>C</kbd> is <kbd>ctrl</kbd> for Windows/Linux, <kbd>cmd</kbd> for Mac.
 
-Send Command to GUI/Terminal.
-
-- `C + enter` to send code to gui/terminal
-- `C + \` to change working dir
-- `C + b` to source the current R file, or to run [knitr](https://github.com/yihui/knitr) for Rnw or R markdown files.
-
-Change R Applications
-
-- `C + shift + p` -> `R-Box Application`
+- <kbd>C</kbd> + <kbd>enter</kbd> to send code to gui/terminal. R.app is the default for mac, R64.exe is default for windows and tmux is the default for linux. To change the application, do <kbd>C</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> -> `R-Box: Choose Program`.
+- <kbd>C</kbd> + <kbd>\\</kbd> to change working dir
+- <kbd>C</kbd> + <kbd>b</kbd> to source the current R file, or to run [knitr](https://github.com/yihui/knitr) for Rnw or R markdown files.
 
 
 ### Settings
@@ -45,6 +40,48 @@ Change R Applications
 See `Preference -> Package Settings -> R-Box`
 
 
+### Autocompletions and status bar hints
+
+Auto completions and status bar hints only support limited number of packages. R-Box will search for `library` or `require` statements in order to load the corresponding package support files. The support files are under the `packages` directory.  If your favorite packages are not listed there, you can generate the corresponding files by running `packages.R` in the following steps.
+
+1. `Preference: Browse Packages` and create the directory `.../Packages/Users/R-Box/` if it doesn't exist
+2. Copy the file `packages.R` to `R-Box`
+3. Run `Rscript packages.R <package name>`
+
+This will create a json file under `packages` directory. You could also submit a pull request for the package support files.
+
+### Customize syntax highlight packages
+
+In default, only functions from the default libraries are highlighted. To add syntax highlight for different packages, do the followings.
+
+1. `Preference: Browse Packages` and create the directory `.../Packages/Users/R-Box/` if it doesn't exist
+2. Copy the file `syntax.R` to `R-Box`
+3. Edit the `packages` variables in `syntax.R`
+4. Run `Rscript syntax.R`
+
+This will create a syntax file `R Functions.tmlanguage` under `syntax` directory.  Sublime will load the file automatically.
+
+### FAQ
+
+#### SublimeLinter settings
+
+To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-contrib-R](https://github.com/jimhester/SublimeLinter-contrib-R) and  [lintr](https://github.com/jimhester/lintr), please add the following in the SublimeLinter user settings file:
+
+```
+    "syntax_map": {
+        "r extended": "r"
+    }
+```
+
+#### Cmder settings
+
+There are two things that you need to do:
+
+1. Due to this [bug!?](http://www.autohotkey.com/board/topic/92360-controlsend-messes-up-modifiers/), you have to change the paste shortcut of Cmder from <kbd>shift</kbd>+<kbd>insert</kbd> to <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>v</kbd> in Cmder settings.
+
+2. Go to `Paste` in the settings, uncheck, "Confirm <enter> keypress" and "Confirm pasting more than..."
+
+
 ### License
 
-R-Box is licensed under the MIT License. Files under `bin` are included with their own licenses.
+R-Box is licensed under the MIT License. `AutoHotkeyU32.exe` under `bin` is included with its own license.
