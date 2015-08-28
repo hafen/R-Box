@@ -93,6 +93,13 @@ class SendTextMixin:
         if plat == "linux":
             prog = settings.get("prog", "tmux")
 
+        R_box_setwd = self.view.settings().get('R_box_setwd')
+        if R_box_setwd is not None:
+            if R_box_setwd:
+                folder = self.view.window().folders()
+                if folder is not None:
+                    cmd = 'try(setwd("' + folder[0] + '"), silent = TRUE)\n' + cmd
+
         if prog == 'Terminal':
             self._send_text_terminal(cmd)
 
