@@ -17,9 +17,6 @@
     // auto advance lines after sending command
     "auto_advance": true,
 
-    // keep focus on App after sending command
-    "app_focus": false,
-
     // auto completions for the following packages
     // "base", "stats", "methods", "utils", "graphics",
     // "grDevices", "data.table", "ggplot2"
@@ -27,5 +24,8 @@
     "auto_completions": true,
 
     // enable status bar hint
-    "status_bar_hint": true
+    "status_bar_hint": true,
+
+    // keep focus on 'prog' in osx after sending command
+    "prog_focus": true
 }

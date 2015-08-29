@@ -136,6 +136,10 @@ class SendTextMixin:
         elif prog == "Cmder":
             self._send_text_ahk(cmd, "", "Cmder.ahk")
 
+        if plat == "osx" and settings.get("prog_focus", True):
+            args = ['osascript']
+            args.extend(['-e', 'tell app "' + prog + '" to activate'])
+            subprocess.Popen(args)
 
 class ExpandBlockMixin:
 
