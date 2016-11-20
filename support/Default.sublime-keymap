@@ -1,16 +1,17 @@
 [
-    { "keys": ["\""], "command": "r_box_source_prompt", "context":
+    { "keys": ["enter"], "command": "insert", "args": {"characters": "\n#' "}, "context":
         [
-            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
-            { "key": "preceding_text", "operator": "regex_contains", "operand": "^(?:source|sourceCpp)\\($", "match_all": true },
-            { "key": "following_text", "operator": "regex_contains", "operand": "^(?:'|\"|\\)| |$)", "match_all": true },
-            { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted.double", "match_all": true },
+            { "key": "preceding_text", "operator": "regex_contains", "operand": "^#'.*$", "match_all": true },
+            { "key": "selection_empty", "match_all": true, "operand": true, "operator": "equal"},
             { "key": "selector", "operator": "equal", "operand": "source.r" }
         ]
     },
-    { "keys": ["escape"], "command": "r_box_clean_status", "context":
+    { "keys": ["\""], "command": "r_box_source_prompt", "context":
         [
-            { "key": "setting.r_box_status"},
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "preceding_text", "operator": "regex_contains", "operand": "(?:source|sourceCpp)\\($", "match_all": true },
+            { "key": "following_text", "operator": "regex_contains", "operand": "^(?:'|\"|\\)| |$)", "match_all": true },
+            { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted.double", "match_all": true },
             { "key": "selector", "operator": "equal", "operand": "source.r" }
         ]
     }

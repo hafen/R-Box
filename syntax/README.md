@@ -6,7 +6,6 @@ R-Extended support Roxygen, Rcpp, R Sweave and R Markdown syntaxes.
 
 
 ### R Markdown
-The R Markdown syntax is derived from [Markdown Extended](https://github.com/jonschlinkert/sublime-markdown-extended). LaTeX syntax is supported in R Markdown. For example
 
 ```
 - $a$ and $b$ are variables such that
@@ -14,8 +13,6 @@ $$
 a^2 + b^2 = 1
 $$
 ```
-
-Note: The dollor sign `$` is treated as a special char, to display the original dollor sign `$`, please type `\$`.
 
 
 ### Roxygen
