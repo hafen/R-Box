@@ -1,75 +1,38 @@
 library(stringr)
 
-args <- commandArgs(TRUE)
+packages <- c(
+    "base",
+    "graphics",
+    "grDevices",
+    "methods",
+    "stats",
+    "utils"
+)
 
-if (length(args)>0){
-    packages <- args
-}else{
-    packages <- c(
-        "base",
-        "graphics",
-        "grDevices",
-        "methods",
-        "stats",
-        "utils"
-    )
-}
-
-ls_package <- function(pkg){
-    members <- ls(pattern="*", paste0("package:",pkg))
-    ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]+$", members)
-    out <- members[ind]
-    attr(out, "package") <- pkg
-    out
-}
-
-get_functions <- function(objs){
-    pkg <- attr(objs, "package")
-    e <- as.environment(paste0("package:", pkg))
-    out <- Filter(function(x) {
-            obj <- get(x, envir = e)
-            is.function(obj)
-        },
-        objs
-    )
-    attr(out, "package") <- pkg
-    out
+get_functions <- function(pkg) {
+    objs <- unclass(lsf.str(envir = asNamespace(pkg)))
+    objs[str_detect(objs, "^[a-zA-Z\\._][0-9a-zA-Z\\._]*$")]
 }
 
 template <- "
     - match: \\b(foo)\\s*(\\()
       captures:
         1: support.function.r
-      push:
-        - meta_scope: meta.function-call.r
-        - meta_content_scope: meta.function-call.parameters.r
-        - match: '[a-zA-Z._][a-zA-Z0-9._]*(?=\\s*=)'
-          scope: variable.parameter.r
-        - match: '(?==)'
-          push:
-            - include: \"R Extended.sublime-syntax\"
-            - match: (?=[,)])
-              pop: true
-        - match: \\)
-          pop: true
-        - include: \"R Extended.sublime-syntax\"
+      push: function-parameters
 "
 
 templated_block <- function(pkg){
-    content <- paste0(sub("\\.","\\\\\\\\.", get_functions(ls_package(pkg))), collapse="|")
+    content <- paste0(sub("\\.", "\\\\\\\\.", get_functions(pkg)), collapse = "|")
     str_replace(template, "foo", content)
 }
 
 dict <- ""
 for (pkg in packages){
-    library(pkg, character.only=TRUE)
     dict <- paste0(dict, templated_block(pkg))
 }
 
-syntax_file <- "syntax/R Support Functions.sublime-syntax"
+syntax_file <- "syntax/R Extended.sublime-syntax"
 content <- readChar(syntax_file, file.info(syntax_file)$size)
-begin_pt <- str_locate(content, "main:\n")[2]
+begin_pt <- str_locate(content, "builtin-functions:\n")[2]
 str_sub(content, begin_pt, str_length(content)) <- dict
-
-dir.create("syntax", FALSE)
-cat(content, file=syntax_file)
+cat(content, file = syntax_file)

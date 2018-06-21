@@ -1,0 +1,59 @@
+{
+    "keyfiles": ["DESCRIPTION"],
+    "working_dir": "$folder",
+    "cmd": [
+        "Rscript", "-e",
+        "devtools::install(\".\")"
+    ],
+    "variants": [
+        {
+            "name": "Clean and Build",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::install(\".\", local=FALSE)"
+            ]
+        },
+        {
+            "name": "Test",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::test(\".\")"
+            ]
+        },
+        {
+            "name": "Check",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::check(\".\")"
+            ]
+        },
+        {
+            "name": "Document",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::document(\".\")"
+            ]
+        },
+        {
+            "name": "Compile C++ Attributes",
+            "cmd": [
+                "Rscript", "-e",
+                "Rcpp::compileAttributes(\".\")"
+            ]
+        },
+        {
+            "name": "Build Source",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::build(\".\")"
+            ]
+        },
+        {
+            "name": "Build Binary",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::build(\".\", binary=TRUE)"
+            ]
+        }
+    ]
+}
